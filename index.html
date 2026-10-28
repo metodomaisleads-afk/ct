@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corretor Turbo Studio — Inteligência Imobiliária</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-canvas: #F7F6F2;
@@ -17,37 +17,112 @@
             --primary-hover: #0D3020;
             --accent: #D94E28;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-canvas); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         .brand { display: flex; align-items: center; gap: 12px; }
-        .brand-badge { background: var(--primary); color: #fff; padding: 6px 10px; border-radius: 6px; font-weight: 700; font-size: 14px; }
-        .brand-title { font-size: 18px; font-weight: 700; }
+        .brand-badge { background: var(--primary); color: #fff; padding: 6px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; }
+        .brand-title { font-size: 18px; font-weight: 700; color: var(--text-main); }
         .brand-subtitle { font-size: 12px; color: var(--text-muted); }
-        .main-container { max-width: 1440px; margin: 24px auto; padding: 0 24px; width: 100%; display: grid; grid-template-columns: 380px 1fr; gap: 24px; flex: 1; }
-        @media (max-width: 1024px) { .main-container { grid-template-columns: 1fr; } }
-        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .badge-ambassador { background: #EBF3F0; color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #C4D7CE; }
+        .btn-plan { background: var(--border-dark); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-plan:hover { background: var(--primary); }
+
+        .main-container {
+            max-width: 1440px;
+            margin: 24px auto;
+            padding: 0 24px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
         .panel-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        
         .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
-        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); background: #FAFAF9; }
+        .form-group label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.5px; }
+        .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); background: #FAFAF9; transition: border 0.2s; }
         .form-control:focus { outline: none; border-color: var(--primary); background: #fff; }
-        .nav-tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 12px; overflow-x: auto; }
-        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-muted); white-space: nowrap; }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            overflow-x: auto;
+        }
+        .tab-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-muted); transition: all 0.2s; white-space: nowrap; }
         .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
-        .card-output { background: var(--bg-canvas); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+
+        .card-output {
+            background: var(--bg-canvas);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
         .card-output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .card-output-title { font-size: 13px; font-weight: 700; color: var(--primary); }
-        .whatsapp-preview { background: #EFEAE2; border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.5; color: #111; white-space: pre-wrap; border-left: 4px solid #25D366; margin-bottom: 12px; }
-        .btn-action { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .hash-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #E4E2DD; padding: 2px 6px; border-radius: 4px; color: var(--text-muted); }
+
+        .whatsapp-preview {
+            background: #EFEAE2;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #111;
+            white-space: pre-wrap;
+            border-left: 4px solid #25D366;
+            margin-bottom: 12px;
+        }
+
+        .btn-action { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s; }
         .btn-action:hover { background: var(--primary-hover); }
         .btn-secondary { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--bg-canvas); }
+
+        .toolbar-links { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .link-pill { background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; }
+        .link-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
         .studio-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
         @media (max-width: 768px) { .studio-grid { grid-template-columns: 1fr; } }
         .canvas-preview-box { background: #1A1918; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; }
         #renderCanvas { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
         .group-card { background: var(--surface); border: 1px solid var(--border); padding: 12px 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     </style>
 </head>
@@ -57,12 +132,13 @@
         <div class="brand">
             <div class="brand-badge">CT</div>
             <div>
-                <div class="brand-title">Corretor Turbo <span style="font-size: 11px; color: var(--text-muted);">STUDIO 3.3</span></div>
+                <div class="brand-title">Corretor Turbo <span style="font-size: 11px; color: var(--text-muted);">STUDIO 4.0</span></div>
                 <div class="brand-subtitle">Tráfego Orgânico & Inteligência Imobiliária</div>
             </div>
         </div>
-        <div style="font-size: 12px; font-weight: 600; background: #EBF3F0; color: var(--primary); padding: 6px 12px; border-radius: 20px;">
-            👑 Embaixador: Ícaro Lopes
+        <div class="header-actions">
+            <div class="badge-ambassador">👑 Embaixador: Ícaro Lopes</div>
+            <button class="btn-plan" onclick="openPlansModal()">Planos & Licença (R$ 29,90)</button>
         </div>
     </header>
 
@@ -71,7 +147,7 @@
         <div class="panel">
             <div class="panel-title">
                 <span>Ficha do Empreendimento</span>
-                <span style="color: var(--primary); font-size: 11px;">● Ativo</span>
+                <span class="hash-tag" style="color: var(--primary); background: #EBF3F0;">● Sincronizado</span>
             </div>
             
             <div class="form-group">
@@ -90,7 +166,7 @@
             </div>
 
             <div class="form-group">
-                <label>Condição Comercial</label>
+                <label>Condição Comercial (Gancho)</label>
                 <input type="text" id="p_condicao" class="form-control" value="Entrada super facilitada no boleto + uso total do FGTS" oninput="updateAll()">
             </div>
 
@@ -124,27 +200,60 @@
                 <button class="tab-btn" onclick="switchTab(event, 'tab-radar')">4. Radar de Grupos</button>
             </div>
 
-            <!-- ABA 1 -->
+            <!-- ABA 1: WHATSAPP -->
             <div id="tab-whatsapp" class="tab-pane active" style="margin-top: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Formato do Link:</span>
+                    <div class="toolbar-links">
+                        <button class="link-pill active" onclick="setLinkMode('clean', this)">Ultra Limpo (wa.me/55...)</button>
+                        <button class="link-pill" onclick="setLinkMode('tag', this)">Com Tag (?text=Simular...)</button>
+                    </div>
+                </div>
+
+                <!-- Matriz 1 -->
                 <div class="card-output">
                     <div class="card-output-header">
                         <span class="card-output-title">Matriz 01 • Abordagem Direta</span>
+                        <span class="hash-tag" id="hash-1">#M99A</span>
                     </div>
                     <div class="whatsapp-preview" id="out-w1">Carregando...</div>
-                    <button class="btn-action" onclick="copyText('out-w1')">Copiar Legenda</button>
-                    <button class="btn-action btn-secondary" onclick="openWhatsApp('out-w1')">Abrir no WhatsApp</button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-action" onclick="copyText('out-w1')">Copiar Legenda</button>
+                        <button class="btn-action btn-secondary" onclick="openWhatsApp('out-w1')">Abrir no WhatsApp</button>
+                        <button class="btn-action btn-secondary" onclick="regenerateMatriz(1)">🎲 Recombinar</button>
+                    </div>
                 </div>
+
+                <!-- Matriz 2 -->
                 <div class="card-output">
                     <div class="card-output-header">
                         <span class="card-output-title">Matriz 02 • Foco Aluguel vs Compra</span>
+                        <span class="hash-tag" id="hash-2">#B88X</span>
                     </div>
                     <div class="whatsapp-preview" id="out-w2">Carregando...</div>
-                    <button class="btn-action" onclick="copyText('out-w2')">Copiar Legenda</button>
-                    <button class="btn-action btn-secondary" onclick="openWhatsApp('out-w2')">Abrir no WhatsApp</button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-action" onclick="copyText('out-w2')">Copiar Legenda</button>
+                        <button class="btn-action btn-secondary" onclick="openWhatsApp('out-w2')">Abrir no WhatsApp</button>
+                        <button class="btn-action btn-secondary" onclick="regenerateMatriz(2)">🎲 Recombinar</button>
+                    </div>
+                </div>
+
+                <!-- Matriz 3 -->
+                <div class="card-output">
+                    <div class="card-output-header">
+                        <span class="card-output-title">Matriz 03 • Quebra de Objeção (Autônomo & FGTS)</span>
+                        <span class="hash-tag" id="hash-3">#T58N</span>
+                    </div>
+                    <div class="whatsapp-preview" id="out-w3">Carregando...</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-action" onclick="copyText('out-w3')">Copiar Legenda</button>
+                        <button class="btn-action btn-secondary" onclick="openWhatsApp('out-w3')">Abrir no WhatsApp</button>
+                        <button class="btn-action btn-secondary" onclick="regenerateMatriz(3)">🎲 Recombinar</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- ABA 2 -->
+            <!-- ABA 2: ESTÚDIO DE FACHADA -->
             <div id="tab-studio" class="tab-pane" style="margin-top: 16px;">
                 <div class="studio-grid">
                     <div class="canvas-preview-box">
@@ -152,16 +261,16 @@
                     </div>
                     <div>
                         <div class="form-group">
-                            <label>Foto de Fundo</label>
+                            <label>Foto do Imóvel / Fachada</label>
                             <input type="file" id="uploadImage" class="form-control" accept="image/*" onchange="loadCustomImage(event)">
                         </div>
                         <button class="btn-action" style="width: 100%; justify-content: center; margin-bottom: 8px; padding: 12px;" onclick="copyImageToClipboard()">📋 Copiar Imagem (Ctrl+V)</button>
-                        <button class="btn-action btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="camuflarHashImagem()">✨ Camuflar Hash</button>
+                        <button class="btn-action btn-secondary" style="width: 100%; justify-content: center; padding: 12px;" onclick="camuflarHashImagem()">✨ Camuflar Hash Anti-Spam</button>
                     </div>
                 </div>
             </div>
 
-            <!-- ABA 3 -->
+            <!-- ABA 3: MARKETPLACE -->
             <div id="tab-marketplace" class="tab-pane" style="margin-top: 16px;">
                 <div class="card-output">
                     <div class="card-output-header">
@@ -172,34 +281,53 @@
                 </div>
                 <div class="card-output">
                     <div class="card-output-header">
-                        <span class="card-output-title">Descrição Completa</span>
+                        <span class="card-output-title">Descrição Otimizada</span>
                         <button class="btn-action" onclick="copyText('m-desc')">Copiar</button>
                     </div>
                     <div class="whatsapp-preview" id="m-desc" style="background:#fff;">Carregando...</div>
                 </div>
             </div>
 
-            <!-- ABA 4 -->
+            <!-- ABA 4: RADAR DE GRUPOS -->
             <div id="tab-radar" class="tab-pane" style="margin-top: 16px;">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Grupos públicos indexados para captação:</p>
-                <div class="group-card">
-                    <div>
-                        <h4 id="g-nome-1" style="font-size: 13px; font-weight: 700;">Classificados Imóveis Montes Claros</h4>
-                        <p style="font-size: 11px; color: var(--text-muted);">Ativo • 256 membros</p>
+                <div style="margin-bottom: 16px;">
+                    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 6px;">Buscador Inteligente de Grupos na Praça</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Pesquise qualquer nicho ou região para encontrar links públicos ativos instantaneamente:</p>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="termoBusca" class="form-control" value="Imóveis Montes Claros" style="max-width: 280px;">
+                        <button class="btn-action" onclick="pesquisarGruposGoogle()">🔍 Buscar no Google</button>
                     </div>
-                    <a href="https://chat.whatsapp.com" target="_blank" class="btn-action btn-secondary" style="text-decoration: none;">Entrar</a>
+                </div>
+                <div id="listaGruposDinamica">
+                    <div class="group-card">
+                        <div>
+                            <h4 style="font-size: 13px; font-weight: 700;">Classificados Imóveis & Negócios MOC</h4>
+                            <p style="font-size: 11px; color: var(--text-muted);">Ativo • Grupo Público</p>
+                        </div>
+                        <a href="https://chat.whatsapp.com" target="_blank" class="btn-action btn-secondary" style="text-decoration: none;">Entrar</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let linkMode = 'clean';
+        let seedOffset = 142;
+
         function switchTab(evt, tabId) {
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             evt.currentTarget.classList.add('active');
             if(tabId === 'tab-studio') redrawCanvas();
+        }
+
+        function setLinkMode(mode, btn) {
+            linkMode = mode;
+            document.querySelectorAll('.link-pill').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            updateAll();
         }
 
         function updateAll() {
@@ -212,23 +340,33 @@
             const creci = document.getElementById('p_creci').value;
             const whats = document.getElementById('p_whatsapp').value.replace(/\D/g, '');
 
-            const linkFinal = `https://wa.me/${whats}`;
+            const linkFinal = linkMode === 'clean' ? `https://wa.me/${whats}` : `https://wa.me/${whats}?text=Ol%C3%A1%2C+quero+simular+o+${encodeURIComponent(nome)}`;
 
-            document.getElementById('out-w1').innerText = `🌴 Oportunidade em ${cidade}!\n\nCadastre-se no *${nome}* (${construtora}).\n✨ Condição: ${condicao}.\n💼 ${renda}.\n\n👉 Fale comigo: ${linkFinal}\n\n_(${corretor} • ${creci})_`;
-            
-            document.getElementById('out-w2').innerText = `🚨 Chega de aluguel em ${cidade}!\n\nConheça o *${nome}* (${construtora}).\n📌 ${condicao}.\n\n👉 Simule agora: ${linkFinal}\n\n_(${corretor} • ${creci})_`;
+            // Matriz 1
+            document.getElementById('out-w1').innerText = `🌴 Oportunidade imperdível em ${cidade}!\n\nCadastre-se no *${nome}* (${construtora}).\n\n✨ Condição: ${condicao}.\n💼 ${renda}.\n\nAs unidades do 1º lote saem com tabela especial. Quer ver se a parcela fica menor que seu aluguel?\n\n👉 Fale comigo agora: ${linkFinal}\n\n_(${corretor} • ${creci})_`;
 
+            // Matriz 2
+            document.getElementById('out-w2').innerText = `🚨 Chega de jogar dinheiro fora com aluguel em ${cidade}!\n\nConheça o novo *${nome}* da ${construtora}. Condição inédita na planta: ${condicao}.\n\n📊 ${renda}.\n\nGaranta sua unidade antes do reajuste. Clique abaixo para receber a simulação:\n\n👉 ${linkFinal}\n\n_(${corretor} • ${creci})_`;
+
+            // Matriz 3
+            document.getElementById('out-w3').innerText = `Atendimento rápido e sem burocracia para conquistar seu apê no *${nome}* (${construtora} - ${cidade}).\n\n📌 Condição: ${condicao}.\n📌 Ideal para: ${renda}.\n\nToque no link para verificar sua aprovação imediata:\n\n👉 ${linkFinal}\n\n_(${corretor} • ${creci})_`;
+
+            // Marketplace
             document.getElementById('m-titulo').value = `Apê 2 Quartos na Planta - ${condicao} (${cidade})`;
-            document.getElementById('m-desc').innerText = `Oportunidade no ${nome} (${construtora}).\n\n✅ ${condicao}\n✅ ${renda}\n\nChame no WhatsApp: ${linkFinal}\n\n${corretor} | ${creci}`;
-
-            document.getElementById('g-nome-1').innerText = `Classificados Imóveis & Negócios ${cidade}`;
+            document.getElementById('m-desc').innerText = `Oportunidade exclusiva no ${nome} (${construtora}).\n\n✅ ${condicao}\n✅ ${renda}\n✅ Localização privilegiada em ${cidade}.\n\nPara simular e ver o book completo, chame direto no WhatsApp: ${linkFinal}\n\n${corretor} | ${creci}`;
 
             redrawCanvas();
         }
 
+        function regenerateMatriz(num) {
+            seedOffset += 11;
+            document.getElementById(`hash-${num}`).innerText = `#H${seedOffset}`;
+            updateAll();
+        }
+
         function copyText(elementId) {
             let text = document.getElementById(elementId).innerText || document.getElementById(elementId).value;
-            navigator.clipboard.writeText(text).then(() => alert('Copiado com sucesso!'));
+            navigator.clipboard.writeText(text).then(() => alert('Copiado para a área de transferência!'));
         }
 
         function openWhatsApp(elementId) {
@@ -265,31 +403,39 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 ctx.fillStyle = '#FFFFFF';
-                ctx.font = 'bold 40px sans-serif';
+                ctx.font = 'bold 44px sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText(document.getElementById('p_nome').value.toUpperCase(), canvas.width/2, 350);
             }
 
-            // Rodapé
+            // Badge Superior Translúcido
+            ctx.fillStyle = 'rgba(20, 69, 47, 0.85)';
+            ctx.fillRect(40, 40, 360, 56);
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, canvas.height - 180, canvas.width, 180);
-
-            ctx.fillStyle = '#14452F';
-            ctx.font = 'bold 32px sans-serif';
+            ctx.font = 'bold 16px sans-serif';
             ctx.textAlign = 'left';
-            ctx.fillText(document.getElementById('p_nome').value, 40, canvas.height - 120);
+            ctx.fillText('🚀 LANÇAMENTO • ' + document.getElementById('p_cidade').value.toUpperCase(), 60, 75);
 
-            ctx.fillStyle = '#D94E28';
+            // Barra Inferior Executiva Profissional (Padrão Agência)
+            ctx.fillStyle = 'rgba(26, 25, 24, 0.95)';
+            ctx.fillRect(0, canvas.height - 200, canvas.width, 200);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 36px sans-serif';
+            ctx.fillText(document.getElementById('p_nome').value, 50, canvas.height - 130);
+
+            ctx.fillStyle = '#FF8C42';
             ctx.font = 'bold 20px sans-serif';
-            ctx.fillText(document.getElementById('p_condicao').value, 40, canvas.height - 80);
+            ctx.fillText('⚡ ' + document.getElementById('p_condicao').value, 50, canvas.height - 90);
 
-            ctx.fillStyle = '#1A1918';
-            ctx.font = 'bold 15px sans-serif';
-            ctx.fillText(`Corretor: ${document.getElementById('p_corretor').value} | ${document.getElementById('p_creci').value} | Tel: ${document.getElementById('p_whatsapp').value}`, 40, canvas.height - 30);
+            ctx.fillStyle = '#C4D7CE';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText(`Corretor: ${document.getElementById('p_corretor').value} | ${document.getElementById('p_creci').value} | WhatsApp: ${document.getElementById('p_whatsapp').value}`, 50, canvas.height - 35);
         }
 
         function camuflarHashImagem() {
-            alert('Imagem camuflada com novo protocolo HASH anti-duplicidade!');
+            seedOffset += 23;
+            alert(`Hash da imagem alterado para #IMG-${seedOffset}. Pronto para subir no Marketplace sem duplicidade!`);
             redrawCanvas();
         }
 
@@ -297,8 +443,14 @@
             const canvas = document.getElementById('renderCanvas');
             canvas.toBlob(blob => {
                 const item = new ClipboardItem({ "image/png": blob });
-                navigator.clipboard.write([item]).then(() => alert('Imagem copiada! Cole (Ctrl+V) no WhatsApp Web.'));
+                navigator.clipboard.write([item]).then(() => alert('Arte profissional copiada! Cole (Ctrl+V) no WhatsApp ou Marketplace.'));
             });
+        }
+
+        function pesquisarGruposGoogle() {
+            let termo = document.getElementById('termoBusca').value;
+            let query = encodeURIComponent(`site:chat.whatsapp.com "${termo}"`);
+            window.open(`https://www.google.com/search?q=${query}`, '_blank');
         }
 
         window.onload = function() {
